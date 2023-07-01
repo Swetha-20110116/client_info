@@ -1,0 +1,105 @@
+import java.sql.*;
+import java.util.Scanner;
+
+class client_info{
+    public static void main(String args[]) {
+        try{
+            Scanner sc = new Scanner(System.in);
+            Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/client_info", "root", "root");
+            Statement st = connect.createStatement();
+            System.out.println("DATABASE INFORMATION:");
+            System.out.println("Enter your choice:\n1.Update\n2.Delete\n3.Insert\n4.Show\nAny other choice to exit");
+            int choice = sc.nextInt();
+            while(choice == 1 || choice == 2 || choice ==3 || choice == 4) {
+                switch(choice) {
+                    case 1:
+                        System.out.println("Choose the column you wish to update:\n1.customer_id\n2.customer\n3.country\n4.city\n5.contact_no\n6.date\n7.limitation_year\n8.contact_manager\nAny other choice to complete your update");
+                        int choice2 = sc.nextInt();
+                        while (choice2 == 1 || choice2 == 2 || choice == 3 || choice == 4 || choice == 5 || choice == 6 || choice == 7 || choice == 8) {
+                            switch (choice2) {
+                                case 1:
+                                    System.out.println("Enter the value:");
+                                    int a = sc.nextInt();
+                                    System.out.println("Where you want to update(sno)");
+                                    int b = sc.nextInt();
+                                    st.executeUpdate("update client_info set customer_id = " + a + " where customer = " + b);
+                                    break;
+                                case 2:
+                                    System.out.println("Enter the value");
+                                    sc.nextLine();
+                                    String c = sc.nextLine();
+                                    System.out.println("Where you want to update(sno)");
+                                    int d = sc.nextInt();
+                                    st.executeUpdate("update client_info set country = '" + c + "' where customer_id = " + d);
+                                    break;
+                                case 3:
+                                    System.out.println("Enter the value;");
+                                    sc.nextLine();
+                                    String e = sc.nextLine();
+                                    System.out.println("Where you want to update(sno)");
+                                    int f = sc.nextInt();
+                                    st.executeUpdate("update client_info set country = '" + e + "' where customer_id = " + f);
+                                    break;
+                            }
+                            System.out.println("Updated Successfully");
+                            System.out.println("Choose the column you wish to update:\n1.customer_id\n2.customer\n3.country\n4.city\n5.contact_no\n6.date\n7.limitation_year\n8.contact_manager\nAny other choice to complete your update");
+                            choice2 = sc.nextInt();
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Enter the number of client you want to remove:");
+                        String x = sc.nextLine();
+                        st.executeUpdate("delete from cliend_info where country = " + x);
+                        System.out.println("Row Deleted Successfully");
+                        break;
+                    case 3:
+                        System.out.println("Enter the number of customer_id:");
+                        int customerid = sc.nextInt();
+                        System.out.println("Enter the name of customer:");
+                        sc.nextLine();
+                        String  customer= sc.nextLine();
+                        System.out.println("Enter the country:");
+                        String country = sc.nextLine();
+                        System.out.println("Enter the city:");
+                        String city = sc.nextLine();
+                        System.out.println("Enter the contact_no:");
+                        int contact = sc.nextInt();
+                        System.out.println("Enter the date:");
+                        String date = sc.nextLine();
+                        sc.nextLine();
+                        System.out.println("Enter the limitation_year:");
+                        int year = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println("Enter the contact_manager:");
+                        String manager = sc.nextLine();
+                        String query = "insert into client_details (customer_id,customer,country,city,contact_no,date,limitation_year,contact_manager) values ('" + customerid + "', '" + customer + "','" + country + "','"+ city +"'," + contact +" ,'" + date +"',"+year +",'" +  manager +"')";
+                        st.executeUpdate(query);
+                        System.out.println("Successfully Inserted");
+                        break;
+                    case 4:
+                        ResultSet rs = st.executeQuery("select * from client_info");
+                        System.out.println("customer_id      customer      country      city     contact_no      date      limitation_year      contact_manager");
+                        while(rs.next()) {
+                        String id = rs.getString("customer_id");
+                        String customerz = rs.getString("customer");
+                        String countryz = rs.getString("country");
+                        String cityz = rs.getString("city");
+                        int num = rs.getInt("contact_no");
+                        int yearz = rs.getInt("limitation_year");
+                        String datez = rs.getString("date");
+                        String managerz = rs.getString("contact_manager");
+                        System.out.println(id+ "      " + customerz + "        " + countryz+"      "+cityz+"      "+num+"      "+datez+"      "+yearz+"      "+managerz);
+                        }
+                        break;
+                }
+                System.out.println("Enter your choice:\n1.customer_id\n2.customer\n3.country\n4.city\n5.contact_no\n6.date\n7.limitation_year\n8.contact_manager\nAny other choice to exit");
+                choice = sc.nextInt();
+            }
+            connect.close();
+            st.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+}
